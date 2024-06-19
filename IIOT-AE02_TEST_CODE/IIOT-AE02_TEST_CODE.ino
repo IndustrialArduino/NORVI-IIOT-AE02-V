@@ -1,9 +1,7 @@
-
 /*
  * RS485
  * All Output Turn ON Series
  * All input status serial print
- 
  */
 
 #include <SPI.h>
@@ -56,10 +54,10 @@ int readSwitch(){
 }
 
 void setup() {
- Serial.begin(9600);
- pinMode(RS485_FC, OUTPUT); 
- digitalWrite(RS485_FC, HIGH);
- Serial2.begin(115200, SERIAL_8N1,RS485_RXD,RS485_TXD);
+  Serial.begin(9600);
+  pinMode(RS485_FC, OUTPUT); 
+  digitalWrite(RS485_FC, HIGH);
+  Serial2.begin(115200, SERIAL_8N1,RS485_RXD,RS485_TXD);
   
   pinMode(OUTPUT1, OUTPUT);
   pinMode(OUTPUT2, OUTPUT);
@@ -78,26 +76,22 @@ void setup() {
   pinMode(INPUT6, INPUT);
   pinMode(INPUT7, INPUT);
   pinMode(INPUT8, INPUT);
-  
   Wire.begin(16,17);
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-  display.display();
-  
- Wire.begin(I2C1_SDA,I2C1_SCL);
+  display.display(); 
+  Wire.begin(I2C1_SDA,I2C1_SCL);
   delay(100);
   I2C_SCAN_1();
- Serial.println("\nI2C Scanner");  
- if (!ads1.begin(0x48)) {
+  Serial.println("\nI2C Scanner");  
+  if (!ads1.begin(0x48)) {
     Serial.println("Failed to initialize ADS 1 .");
-   // while (1);
   }
   if (!ads2.begin(0x49)) {
     Serial.println("Failed to initialize ADS 1 .");
-   // while (1);
   }
   adcAttachPin(32);
   digitalWrite(RS485_FC, HIGH);   // RS-485 
@@ -116,7 +110,8 @@ void loop() {
   Serial2.print(digitalRead(INPUT8));
   Serial2.println(""); 
 
-  Serial2.print("Push button  ");Serial2.println(readSwitch());
+  Serial2.print("Push button  ");
+  Serial2.println(readSwitch());
   Serial2.println(""); 
 
   adc0 = ads1.readADC_SingleEnded(0);
@@ -217,21 +212,18 @@ void loop() {
   Serial2.println(F("RS485 01 SUCCESS"));    // Send RS485 SUCCESS serially
   delay(500);                                // Wait for transmission of data
   digitalWrite(RS485_FC, LOW) ;                    // Receiving mode ON
-                                             // Serial1.flush() ;
   delay(1000);     
 
   while (Serial2.available()) {  // Check if data is available
     char c = Serial2.read();     // Read data from RS485
     Serial.write(c);             // Print data on serial monitor
   }
-   delay(500);
+  delay(500);
  }
  void I2C_SCAN_1(){
   byte error, address;
   int deviceCount = 0;
-
   Serial.println("Scanning...");
-
   for (address = 1; address < 127; address++) {
     Wire.beginTransmission(address);
     error = Wire.endTransmission();
@@ -242,7 +234,6 @@ void loop() {
       }
       Serial.print(address, HEX);
       Serial.println("  !");
-
       deviceCount++;
       delay(1);  // Wait for a moment to avoid overloading the I2C bus
     }
