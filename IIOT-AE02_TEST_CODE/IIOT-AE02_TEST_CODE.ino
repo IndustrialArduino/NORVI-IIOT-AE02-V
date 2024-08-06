@@ -34,7 +34,7 @@
 #define OUTPUT8 33
 
 #define RS485_RXD 3
-#define RS485_TXD 1
+#define RS485_TXD 2
 #define RS485_FC 4
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
